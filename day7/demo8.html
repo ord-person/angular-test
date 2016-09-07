@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+			</div>
+		</div>
+		
+		<script>
+			var app = angular.module('myApp', [ ]);
+			console.log(app);
+			//属于app全局的配置方法
+			app.config(['$provide', function($provide){
+				$provide.provider('testService', function(){
+					this.$get = function(){
+						return 'this is test service'
+					}
+				})
+//				$provide.service()
+//				$provide.factory()
+			}])
+			app.controller('firstCtrl', ['$scope', 'testService', function($scope, testService){
+				console.log(testService)
+			}])
+			
+		</script>
+		
+		
+	</body>
+</html>

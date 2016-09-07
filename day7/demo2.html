@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		<!--
+			ng-if    true节点在文档中，false节点从dom结构中移除
+			ng-show true节点display为正常的属性，false节点display为none
+			ng-hide 与 ng-show相反
+		-->
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				<button ng-click="btnAction()">按钮</button>
+				
+				<div class="box" ng-if="isShow">1</div>
+				
+				<br /><br />
+				<div class="box" ng-show="isShow">2</div>
+				<span ng-show="isShow">span</span>
+				
+				<div ng-hide="isShow">div</div>
+				<br /><br />
+				<div class="box">3</div>
+			</div>
+		</div>
+		
+		<script>
+		
+			var app = angular.module('myApp', [ ]);
+			app.controller('firstCtrl', ['$scope', function($scope){
+				$scope.isShow = true;
+				$scope.btnAction = function(){
+					$scope.isShow = !$scope.isShow;
+				}
+			}])
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

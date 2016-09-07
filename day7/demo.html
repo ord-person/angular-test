@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				{{name}}
+			</div>
+			<div ng-controller="secondCtrl">
+				{{name}}
+			</div>
+			<!--<div ng-controller="thirdCtrl">
+				{{name}}
+			</div>-->
+		</div>
+		
+		<script>
+		/*
+		 设计模式：工厂模式，适配器模式，单例模式，原型模式，观察者模式。。。。
+		 MVC：不是设计模式，设计思想，架构思想
+		 M:model数据模型
+		 V:view视图
+		 C:controller控制器
+		 控制器管理数据和视图，数据发生改变需要控制器去监听变化
+		 视图发生变化如事件操作，需要控制器进行响应
+		 * */
+		
+		//只能有一个module
+			var app = angular.module('myApp', [ 'myApp3', 'myApp2' ]);
+			app.controller('firstCtrl', ['$scope', function($scope){
+				$scope.name = 'zhangsan';
+			}])
+			app.controller('firstCtrl', ['$scope', function($scope){
+				$scope.name = 'zhangsan2222222222222';
+			}])
+			app.controller('secondCtrl', ['$scope', function($scope){
+				$scope.name = 'zhangsan33333333333';
+			}])
+			
+			var app2 = angular.module('myApp2', [ ]);
+			app2.controller('secondCtrl', ['$scope', '$timeout', function($scope, $timeout){
+				$scope.name = 'lisi';
+			}])
+			
+			var app3 = angular.module('myApp3', [ ]);
+			app3.controller('secondCtrl', ['$scope', function($scope){
+				$scope.name = 'wangwu';
+			}])
+			
+		</script>
+		
+		
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				<input type="checkbox" ng-model="isShow" />
+				<div class="box" ng-if="isShow" ng-controller="secondCtrl"></div>
+			</div>
+		</div>
+		
+		<script>
+			/*
+			 provider()
+			 1.module创建时服务的function就会执行
+			 2.服务的内容通过this.$get的方法return得到的
+			 factory()
+			 1.服务被注入时才会执行服务的function
+			 2.服务的内容通过服务的function return得到
+			 service()
+			 1.服务被注入时才会执行服务的function
+			 2.服务的function是service的构造函数，不需要return,在this下设置就是这个服务的内容
+			 * */
+			var app = angular.module('myApp', [ ], ['$provide', function($provide){
+				
+			}]);
+			console.log(app)
+			
+			
+			app.run(function(){
+				console.log('run........');
+			})
+			
+			
+			app.controller('secondCtrl', ['$scope', function($scope){
+				
+			}])
+			
+			
+			
+			app.controller('firstCtrl', ['$scope', 'service1', 'service2', 'service3',  function($scope, service1, service2, service3){
+				$scope.isShow = true;
+				console.log(service3);
+			}])
+			
+		</script>
+		
+		<script src="service.js"></script>
+		
+	</body>
+</html>

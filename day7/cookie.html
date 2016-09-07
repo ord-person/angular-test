@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload=function(){
+				document.cookie = "name=chen;";
+				document.cookie = "age=21";
+				//expires GMT_String
+				alert(document.cookie)
+				function setCookie(name,value,expires,path,domain,secure){
+					var sum = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+					if(expires instanceof Date){
+						sum += ";expires=" + expires;
+					}
+					if(path){
+						sum += ";path=" + path;
+					}
+					if(domain){
+						sum += ";domain=" + domain;
+					}
+					if(secure){
+						sum += ";secure=" + secure;
+					}
+					documen.cookie = sum;
+				}
+				
+				function getCookie(name){
+					var arr = document.cookie.split("; ");
+					for(var i = 0; i <= arr.length -1 ; i++){
+						var newarr = arr.aplit("=");
+						if(newarr[0] = name){
+							return newarr[1];
+						}
+					}
+				}
+			}
+			
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				<input type="checkbox" ng-model="isShow" />
+				<div class="box" ng-if="isShow" ng-controller="secondCtrl"></div>
+			</div>
+		</div>
+		
+		<script>
+			//服务：提供数据的操作
+			//当dom结构中没有使用控制器时，控制器会被销毁，导致控制器反复创建，数据需要重新构建，
+			//借助服务保存数据
+			
+			//服务$provide
+			/*
+			 provider()
+			 1.module创建时服务的function就会执行
+			 2.服务的内容通过this.$get的方法return得到的
+			 factory()
+			 1.服务被注入时才会执行服务的function
+			 2.服务的内容通过服务的function return得到
+			 service()
+			 1.服务被注入时才会执行服务的function
+			 2.服务的function是service的构造函数，不需要return,在this下设置就是这个服务的内容
+			 
+			 * */
+			var app = angular.module('myApp', [ ], ['$provide', function($provide){
+				
+				//创建服务参数1：服务名字，参数2：服务内容
+				//module创建好之前function就会执行
+				$provide.provider('testSevice', function(){
+					//这个服务通过this.$get得到服务的内容
+					console.log('testSevice start.................');
+					this.$get = function(){
+						return {
+							name: 'zhangsan'
+						}
+					}
+				})
+				
+				//服务被注入时才会执行function
+				$provide.factory('testFactory', function(){
+					console.log('testFactory start.................');
+					return 'this is testFactory';
+				})
+				
+				$provide.service('testService2', function(){
+					console.log('testService2 start....................');
+//					return 'this is service2';
+					this.name = 'zhangsan';
+				})
+				
+			}]);
+			
+			app.run(function(){
+				console.log('run........');
+			})
+			
+			
+			app.controller('secondCtrl', ['$scope', 'testSevice', 'testFactory', 'testService2', function($scope, testSevice, testFactory, testService2){
+				console.log(testSevice);
+				
+				console.log(testFactory);
+				
+				console.log(testService2);
+				
+			}])
+			
+			
+			
+			app.controller('firstCtrl', ['$scope', function($scope){
+				$scope.isShow = true;
+				
+			}])
+			
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

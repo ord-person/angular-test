@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1" />
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			body, html{
+				width: 100%;
+				height: 100%;
+			}
+			.app{
+				width: 100%;
+				height: 100%;
+				background: red;
+				position: relative;
+			}
+			.app .page{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.app .page:nth-of-type(1){
+				background: yellow;
+			}
+			.app .page:nth-of-type(2){
+				background: orange;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="app" ng-app="test-App">
+			<div class="page" ng-controller="firstController">
+				<input type="text" placeholder="用户名" ng-model="username" />
+				<input type="password" placeholder="密码" ng-model="psd"/>
+				<input type="button" value="登陆" ng-click="loginAction()"/>
+			</div>
+			<div class="page" ng-if="showSecond" ng-controller="secondController">
+				<p>用户名：{{username}}</p>
+				<p>密码：{{psd}}</p>
+			</div>
+		</div>
+		
+		<script src="angular.min.js"></script>
+		<script>
+			var app = angular.module('test-App', [ ], ['$provide', function($provide){
+				$provide.service('userService', function(){
+					var _user = '';
+					var _psd = '';
+					this.setUser = function(user){
+						_user = user;
+					}
+					this.getUser = function(){
+						return _user;
+					}
+					this.setPsd = function(psd){
+						_psd = psd;
+					}
+					this.getPsd = function(){
+						return _psd;
+					}
+				})
+			}]);
+			
+			app.run(['$rootScope', function($rootScope){
+				$rootScope.showSecond = false;
+			}])
+			
+			app.controller('firstController', ['$scope', '$rootScope', 'userService', function($scope, $rootScope, userService){
+				$scope.loginAction = function(){
+					//得到用户输入的数据
+					console.log($scope.username) 
+					console.log($scope.psd )
+					userService.setUser($scope.username);
+					userService.setPsd($scope.psd);
+					//传给第二个页面
+					$rootScope.showSecond = true;
+				}
+			}])
+			
+			app.controller('secondController', ['$scope', '$rootScope', 'userService', function($scope, $rootScope, userService){
+				$scope.username = userService.getUser();
+				$scope.psd = userService.getPsd();
+			}])
+		</script>
+	</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		<!--
+			ng-if    true节点在文档中，false节点从dom结构中移除
+			ng-show true节点display为正常的属性，false节点display为none
+			ng-hide 与 ng-show相反
+		-->
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				<input type="checkbox" ng-model="isShow" />
+				
+				<div class="box" ng-if="isShow" ng-controller="secondCtrl"></div>
+				<!--<div class="box" ng-if="isShow" ng-controller="secondCtrl"></div>-->
+			</div>
+		</div>
+		
+		<script>
+			//服务：提供数据的操作
+			//当dom结构中没有使用控制器时，控制器会被销毁，导致控制器反复创建，数据需要重新构建，
+			//借助服务保存数据
+			
+			//服务$provide
+			var app = angular.module('myApp', [ ], ['$provide', function($provide){
+//				console.log('test.............');
+				
+				//创建服务参数1：服务名字，参数2：服务内容
+				$provide.provider('testSevice', function(){
+					//这个服务通过this.$get得到服务的内容
+					console.log('testSevice start.................');
+					this.$get = function(){
+						console.log('testSevice get.................');
+						return {
+							name: 'zhangsan'
+						}
+					}
+				})
+				
+				
+				
+			}]);
+			
+			app.run(function(){
+//				console.log('run........');
+			})
+			
+			
+			app.controller('secondCtrl', ['$scope', 'testSevice', function($scope, testSevice){
+				console.log(222222222222);
+				//请求网络数据
+				//处理数据
+				//构造数据模型
+				//展示在view上
+				var jsonObj = {
+					name: 'zhangsan'
+				}
+				
+				$scope.jsonObj = jsonObj;
+				
+				console.log(testSevice);
+				
+				
+			}])
+			
+			
+			
+			app.controller('firstCtrl', ['$scope', function($scope){
+				$scope.isShow = true;
+				console.log(111111111111111);
+				
+			}])
+			
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

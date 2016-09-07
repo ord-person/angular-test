@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.box{
+				width: 100px;
+				height: 100px;
+				background: green;
+			}
+		</style>
+		<script src="angular.min.js"></script>
+	</head>
+	<body>
+		<div ng-app="myApp">
+			<div ng-controller="firstCtrl">
+				{{name}}
+				%name%
+			</div>
+			<div ng-controller="secondCtrl">
+			</div>
+		</div>
+		
+		<script>
+			var app = angular.module('myApp', [ ]);
+			console.log(app);
+			//属于app全局的配置方法
+			//config中只可以注入providers
+			app.config(['$provide', 'testServiceProvider', '$interpolateProvider', function($provide, testServiceProvider, $interpolateProvider){
+				console.log(testServiceProvider)
+				testServiceProvider.hello = 'hello world';
+				
+				$interpolateProvider.startSymbol('%');
+				$interpolateProvider.endSymbol('%');
+				
+			}])
+			
+			app.provider('testService', function(){
+				//不在服务中自己设置，通过provider创建出来的服务，拥有供应商，
+				//供应商可以给provider服务中的this上的属性赋值
+				//供应商名字为 服务名+Provider = testServiceProvider
+				this.hello = '';
+				
+				this.$get = function(){
+					var that = this;
+					var obj = {};
+					obj.getHello = function(){
+						return that.hello;
+					}
+					return obj;
+				}
+			})
+			
+			app.controller('firstCtrl', ['$scope', 'testService', function($scope, testService){
+				console.log(testService.getHello())
+//				console.log(testService)
+				$scope.name = 'zhangsan';
+			}])
+			
+			app.controller('secondCtrl', ['$scope', 'testService', function($scope, testService){
+//				console.log(testService.getHello())
+			}])
+			
+		</script>
+		
+		
+	</body>
+</html>
